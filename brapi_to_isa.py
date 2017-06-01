@@ -119,9 +119,17 @@ def create_isa(endpoint):
         study.materials['sources'].append(source)
         study.materials['samples'].append(sample)
 
-        growth_protocol = Protocol(name="growth protocol",
-                                          protocol_type=OntologyAnnotation(term="growth protocol"))
-        study.protocols.append(growth_protocol)
+        protocol_name = "growth protocol"
+
+        growth_protocol = None
+        for protocol in study.protocols:
+            if protocol.name == protocol_name:
+                growth_protocol = protocol
+
+        if (growth_protocol == None):
+            growth_protocol = Protocol(name=protocol_name, protocol_type=OntologyAnnotation(term=protocol_name))
+            study.protocols.append(growth_protocol)
+
         growth_process = Process(executes_protocol=growth_protocol)
 
         for src in study.materials['sources']:
@@ -139,12 +147,6 @@ def create_isa(endpoint):
         investigation = Investigation()
         investigation.studies.append(study_dict[key])
         investigations.append(investigation)
-
-
-
-
-
-
     return investigations
 
 
