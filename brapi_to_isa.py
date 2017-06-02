@@ -31,10 +31,7 @@ def get_brapi_trials(endpoint):
 def get_brapi_study(endpoint, study_id):
     """Returns a study from an endpoint, given its id."""
     ###dealing with differences in the endpoints
-    if (endpoint==EU_SOL_BRAPI_V1):
-        url = endpoint + 'studies/' + str(study_id)
-    elif (endpoint==PIPPA_BRAPI_V1):
-        url = endpoint + 'studies-search/' + str(study_id)
+    url = endpoint + 'studies/' + str(study_id)
     r = requests.get(url)
     if r.status_code != requests.codes.ok:
         raise RuntimeError("Non-200 status code")
@@ -108,7 +105,7 @@ def create_isa(endpoint):
         #creating a source per germplasm
         source = create_isa_source(phenotype['germplasmDbId'])
         ### for now, creating the sample name combining studyDbId and plotNumber - eventually this should be observationUnitDbId
-        sample_name = phenotype['studyDbId'] + "_" + phenotype['plotNumber']
+        sample_name = phenotype['studyDbId'] + "_" + phenotype['plantNumber']
         sample = Sample(sample_name, derives_from=source)
         study_id = phenotype['studyDbId']
         try:
